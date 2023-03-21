@@ -1,0 +1,14 @@
+{
+  "name": "graphql-demo",
+  "version": "0.0.1",
+  "description": "A GraphQL demo",
+  "author": {
+    "name": "Luis Portillo",
+    "email": "devcorvus.contact@gmail.com",
+    "url": "https://www.devcorvus.com/"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
