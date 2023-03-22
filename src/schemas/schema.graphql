@@ -1,0 +1,20 @@
+type Query {
+  users: [User]
+  user(id: Int): User
+  todos: [Todo]
+  todo(id: Int): Todo
+}
+
+type User {
+  id: Int!
+  email: String!
+  password: String!
+  todos: [Todo]
+}
+
+type Todo {
+  id: Int!
+  title: String!
+  done: Boolean!
+  user: User
+}

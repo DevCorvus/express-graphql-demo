@@ -1,12 +1,11 @@
-import express from 'express';
-import morgan from 'morgan';
+import { initializeServer } from './server';
 
-const PORT = 8000;
+(async () => {
+  const { httpServer, expressServer } = await initializeServer();
 
-const app = express();
+  const port = expressServer.get('port');
 
-app.use(morgan('dev'));
-
-app.listen(PORT, () => {
-  console.log(`Server up and running on port ${PORT}!`);
-});
+  httpServer.listen(port, () => {
+    console.log(`Server up and running on port ${port}!`);
+  });
+})();
