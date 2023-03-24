@@ -7,7 +7,7 @@ export class UserService {
   }
 
   static findOne(userId: string): Promise<UserInterface | null> {
-    return UserModel.findById(userId);
+    return UserModel.findById(userId).populate('todos');
   }
 
   static create(data: CreateUserInput): Promise<UserInterface> {

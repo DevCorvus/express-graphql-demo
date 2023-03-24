@@ -3,11 +3,11 @@ import { TodoModel, TodoInterface } from '../models/Todo';
 
 export class TodoService {
   static findAll(): Promise<TodoInterface[]> {
-    return TodoModel.find({});
+    return TodoModel.find({}).populate('user');
   }
 
   static findOne(todoId: string): Promise<TodoInterface | null> {
-    return TodoModel.findById(todoId);
+    return TodoModel.findById(todoId).populate('user');
   }
 
   static create(userId: string, data: CreateTodoInput): Promise<TodoInterface> {
@@ -24,5 +24,10 @@ export class TodoService {
 
   static delete(userId: string, todoId: string): Promise<TodoInterface | null> {
     return TodoModel.findOneAndDelete({ user: userId, _id: todoId });
+  }
+
+  static async existsById(todoId: string): Promise<boolean> {
+    const result = await TodoModel.exists({ _id: todoId });
+    return Boolean(result);
   }
 }
