@@ -1,36 +1,63 @@
-import { User, Todo, Resolvers } from '../generated/graphql';
-
-const todos: Todo[] = [
-  {
-    id: 1,
-    title: 'Turn on the server',
-    done: true,
-  },
-  {
-    id: 2,
-    title: 'Visit Ohio',
-    done: false,
-  },
-];
-
-const users: User[] = [
-  { id: 1, email: 'fulano@email.com', password: '123456', todos },
-  { id: 2, email: 'fulana@email.com', password: '123456', todos },
-];
+import { GraphQLUnauthenticatedException } from '../exceptions/GraphQLUnauthenticatedException';
+import { Resolvers, Todo, User } from '../generated/graphql';
+import { TodoService } from '../services/todo.service';
+import { UserService } from '../services/user.service';
 
 export const resolvers: Resolvers = {
   Query: {
-    users() {
-      return users;
+    async users() {
+      const data = await UserService.findAll();
+      return data as User[];
     },
-    user(_ctx, args) {
-      return users.find((user) => user.id === args.id) || null;
+    async user(_parent, args) {
+      const data = await UserService.findOne(args.id);
+      return data as User;
     },
-    todos() {
-      return todos;
+    async todos() {
+      const data = await TodoService.findAll();
+      return data as Todo[];
     },
-    todo(_ctx, args) {
-      return todos.find((todo) => todo.id === args.id) || null;
+    async todo(_parent, args) {
+      const data = await TodoService.findOne(args.id);
+      return data as Todo;
+    },
+  },
+  Mutation: {
+    async createUser(_parent, { data }) {
+      const newUser = await UserService.create(data);
+      return newUser as User;
+    },
+    async updateUser(_parent, { id, data }) {
+      const updatedUser = await UserService.update(id, data);
+      return updatedUser as User;
+    },
+    async deleteUser(_parent, { id }) {
+      const userDeleted = await UserService.delete(id);
+      return userDeleted as User;
+    },
+    async createTodo(_parent, { data }, ctx) {
+      if (ctx.userId) {
+        const newTodo = await TodoService.create(ctx.userId, data);
+        return newTodo as Todo;
+      } else {
+        throw new GraphQLUnauthenticatedException();
+      }
+    },
+    async updateTodo(_parent, { id, data }, ctx) {
+      if (ctx.userId) {
+        const updatedTodo = await TodoService.update(ctx.userId, id, data);
+        return updatedTodo as Todo;
+      } else {
+        throw new GraphQLUnauthenticatedException();
+      }
+    },
+    async deleteTodo(_parent, { id }, ctx) {
+      if (ctx.userId) {
+        const todoDeleted = await TodoService.delete(ctx.userId, id);
+        return todoDeleted as Todo;
+      } else {
+        throw new GraphQLUnauthenticatedException();
+      }
     },
   },
 };

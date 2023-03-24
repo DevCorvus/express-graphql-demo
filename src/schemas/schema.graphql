@@ -1,20 +1,52 @@
 type Query {
   users: [User]
-  user(id: Int): User
+  user(id: ID!): User
   todos: [Todo]
-  todo(id: Int): Todo
+  todo(id: ID!): Todo
+}
+
+type Mutation {
+  createUser(data: CreateUserInput!): User
+  updateUser(id: ID!, data: UpdateUserInput!): User
+  deleteUser(id: ID!): User
+  createTodo(data: CreateTodoInput!): Todo
+  updateTodo(id: ID!, data: UpdateTodoInput!): Todo
+  deleteTodo(id: ID!): Todo
 }
 
 type User {
-  id: Int!
+  id: ID
+  email: String
+  password: String
+  todos: [Todo]
+  createdAt: String
+  updatedAt: String
+}
+
+input CreateUserInput {
   email: String!
   password: String!
-  todos: [Todo]
+}
+
+input UpdateUserInput {
+  email: String
+  password: String
 }
 
 type Todo {
-  id: Int!
-  title: String!
-  done: Boolean!
+  id: ID
+  title: String
+  done: Boolean
   user: User
+  createdAt: String
+  updatedAt: String
+}
+
+input CreateTodoInput {
+  title: String!
+}
+
+input UpdateTodoInput {
+  title: String
+  done: Boolean
 }
