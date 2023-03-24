@@ -10,7 +10,7 @@ interface ApolloAuthMiddlewareInterface {
 export async function apolloAuthMiddleware({
   req,
 }: ApolloAuthMiddlewareInterface): Promise<ApolloContext> {
-  const userId = (req.headers.Authorization as string) || null;
+  const userId = (req.headers.authorization as string) || null;
 
   if (userId) {
     const userExists = await UserService.existsById(userId);
