@@ -1,7 +1,7 @@
 {
   "name": "express-graphql-demo",
   "version": "0.0.1",
-  "description": "A GraphQL demo with Express",
+  "description": "A GraphQL demo project with Express, Apollo Server and MongoDB",
   "main": "main.ts",
   "author": {
     "name": "Luis Portillo",
