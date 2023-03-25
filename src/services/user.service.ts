@@ -3,11 +3,11 @@ import { UserInterface, UserModel } from '../models/User';
 
 export class UserService {
   static findAll(): Promise<UserInterface[]> {
-    return UserModel.find({}).populate('todos');
+    return UserModel.find({});
   }
 
   static findOne(userId: string): Promise<UserInterface | null> {
-    return UserModel.findById(userId).populate('todos');
+    return UserModel.findById(userId);
   }
 
   static create(data: CreateUserInput): Promise<UserInterface> {

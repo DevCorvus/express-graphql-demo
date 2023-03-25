@@ -3,11 +3,15 @@ import { TodoModel, TodoInterface } from '../models/Todo';
 
 export class TodoService {
   static findAll(): Promise<TodoInterface[]> {
-    return TodoModel.find({}).populate('user');
+    return TodoModel.find({});
+  }
+
+  static findAllFromUser(userId: string): Promise<TodoInterface[]> {
+    return TodoModel.find({ user: userId });
   }
 
   static findOne(todoId: string): Promise<TodoInterface | null> {
-    return TodoModel.findById(todoId).populate('user');
+    return TodoModel.findById(todoId);
   }
 
   static create(userId: string, data: CreateTodoInput): Promise<TodoInterface> {

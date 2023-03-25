@@ -1,5 +1,7 @@
 import { GraphQLUnauthenticatedException } from '../exceptions/GraphQLUnauthenticatedException';
 import { Resolvers, Todo, User } from '../generated/graphql';
+import { TodoInterface } from '../models/Todo';
+import { UserInterface } from '../models/User';
 import { TodoService } from '../services/todo.service';
 import { UserService } from '../services/user.service';
 
@@ -58,6 +60,20 @@ export const resolvers: Resolvers = {
       } else {
         throw new GraphQLUnauthenticatedException();
       }
+    },
+  },
+  User: {
+    todos: async (parent) => {
+      const userId = (parent as UserInterface)._id;
+      const data = await TodoService.findAllFromUser(userId);
+      return data as Todo[];
+    },
+  },
+  Todo: {
+    user: async (parent) => {
+      const userId = (parent as TodoInterface).user as string;
+      const data = await UserService.findOne(userId);
+      return data as User;
     },
   },
 };
